@@ -1,19 +1,25 @@
 // views/mainWindow.js
 import Group from "./group";
 import FavTabs from "../components/favtabs.jsx";
-import taskGroups from "../utils/mockTaskGroups";
+import taskGroups2 from "../utils/mockTaskGroups";
 import { supabase } from "../../supabaseClient";
 import { useState, useEffect } from "react";
 
 export default function MainWindow({ session }) {
-  const [taskGroups2, setTaskGroups2] = useState(taskGroups);
+  const [username, setUsername] = useState(null);
+  const [taskGroups, setTaskGroups] = useState(taskGroups2);
   useEffect(() => {
     async function getTG() {
-      const tg2 = await supabase.from("taskgroups").select("*");
-      console.log(tg2);
-      setTaskGroups2(tg2);
+      const { data } = await supabase.from("taskgroups").select("*");
+      console.log("tg.data", data);
+      setTaskGroups(data);
     }
     getTG();
+    async function getUsername() {
+      const { data } = await supabase.from("users").select("username").single();
+      setUsername(data.username);
+    }
+    getUsername();
   }, []);
 
   return (
@@ -29,7 +35,7 @@ export default function MainWindow({ session }) {
 
           <div>
             <p className="bg-white text-black rounded-xl text-xl p-4">
-              mani99brar
+              {username}
             </p>
           </div>
         </div>

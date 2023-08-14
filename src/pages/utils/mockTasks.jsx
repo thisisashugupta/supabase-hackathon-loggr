@@ -1,4 +1,4 @@
-const tasks = [
+const tasks2 = [
   {
     task_id: 1,
     title: "Buy groceries",
@@ -41,4 +41,4 @@ const tasks = [
   },
 ];
 
-export default tasks;
+export default tasks2;

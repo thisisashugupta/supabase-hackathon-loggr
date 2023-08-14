@@ -1,4 +1,4 @@
-const taskGroups = [
+const taskGroups2 = [
   {
     tg_id: 3,
     tg_name: "Personal Tasks",
@@ -26,4 +26,4 @@ const taskGroups = [
   // },
 ];
 
-export default taskGroups;
+export default taskGroups2;
