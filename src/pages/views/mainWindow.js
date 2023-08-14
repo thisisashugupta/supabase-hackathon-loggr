@@ -1,6 +1,7 @@
 // views/mainWindow.js
 import Group from "./group";
 import FavTabs from "../components/favtabs.js"
+import taskGroups from '../utils/mockTaskGroups';
 export default function MainWindow() {
   return (
     <div className="w-[90%] h-[80%] border-solid border-white border-4 rounded flex justify-center items-center">
@@ -17,8 +18,9 @@ export default function MainWindow() {
         </div>
         <div className="w-[100%] h-[94%] flex justify-between items-center">
             <div className="w-[60%] h-[90%]  flex items-center space-x-6">
-                <Group/>
-                <Group/>
+            {taskGroups.map(taskGroup => (
+              <Group key={taskGroup.tg_id} groupData={taskGroup} />
+            ))}
             </div>
             <div className="w-[40%] h-[90%] flex flex-col justify-between">
                 <div className="h-[44%] border-solid border-white border-4 rounded flex flex-col items-center py-4">
