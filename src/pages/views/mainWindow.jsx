@@ -7,7 +7,42 @@ import { useState, useEffect } from "react";
 
 export default function MainWindow({ session }) {
   const [username, setUsername] = useState(null);
+  const [user_id, setUser_id] = useState(null);
   const [taskGroups, setTaskGroups] = useState(taskGroups2);
+  const [showAddGroupForm, setShowAddGroupForm] = useState(false);
+  // show add group form
+  const handleShowForm = () => {
+    setShowAddGroupForm(true);
+    console.log("showAddGroupForm", showAddGroupForm);
+  };
+  // hide add group form
+  const handleHideForm = () => {
+    setShowAddGroupForm(false);
+    console.log("showAddGroupForm", showAddGroupForm);
+  };
+  // add group is clicked
+  const handleAddGroupClick = () => {
+    handleShowForm();
+    console.log("Button clicked!");
+    // Add your custom logic here
+  };
+  // tg_name is added
+  const handleAddTaskGroup = async (e) => {
+    e.preventDefault();
+    const new_tg_name = e.target.taskGroupName.value;
+    console.log(new_tg_name);
+    console.log(supabase);
+
+    const { data, error } = await supabase
+      .from("taskgroups")
+      .insert([{ tg_name: new_tg_name, user_id: user_id }])
+      .select();
+
+    console.log(data);
+
+    handleHideForm();
+  };
+
   useEffect(() => {
     async function getTG() {
       const { data } = await supabase.from("taskgroups").select("*");
@@ -15,11 +50,12 @@ export default function MainWindow({ session }) {
       setTaskGroups(data);
     }
     getTG();
-    async function getUsername() {
-      const { data } = await supabase.from("users").select("username").single();
+    async function getUserData() {
+      const { data } = await supabase.from("users").select("*").single();
       setUsername(data.username);
+      setUser_id(data.user_id);
     }
-    getUsername();
+    getUserData();
   }, []);
 
   return (
@@ -28,9 +64,31 @@ export default function MainWindow({ session }) {
         <div className="flex justify-between">
           <div className="flex space-x-8">
             <h1 className="font-bold text-6xl">Tuesday 1 Jan</h1>
-            <p className="bg-white text-black rounded-xl text-xl p-4">
+
+            <button
+              onClick={handleAddGroupClick}
+              className="bg-white text-black rounded-xl text-xl p-4"
+            >
               Add Group
-            </p>
+            </button>
+          </div>
+
+          <div>
+            {showAddGroupForm && (
+              <div className="overlay">
+                <form onSubmit={handleAddTaskGroup}>
+                  <input
+                    type="text"
+                    name="taskGroupName"
+                    placeholder="Task Group Name"
+                  />
+                  <button type="submit">Add</button>
+                  <button type="button" onClick={handleHideForm}>
+                    Cancel
+                  </button>
+                </form>
+              </div>
+            )}
           </div>
 
           <div>
