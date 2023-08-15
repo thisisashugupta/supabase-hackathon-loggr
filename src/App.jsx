@@ -1,5 +1,5 @@
 import "./App.css";
-import "./styles/globals.css";
+import "./styles/tailwind.css";
 
 import { useState, useEffect } from "react";
 import { supabase } from "./supabaseClient";
